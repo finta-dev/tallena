@@ -1,0 +1,27 @@
+{
+  "name": "tallena",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finta-dev/tallena.git"
+  },
+  "author": "Franco Taboada",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/finta-dev/tallena/issues"
+  },
+  "homepage": "https://github.com/finta-dev/tallena#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.21.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.3"
+  }
+}
