@@ -8,10 +8,20 @@ const schema = new mongoose.Schema({
     lastname: {type: String, required: true},
     username: {type: String, required: true, unique: true},
     password: {type: String, required: true, minlength: 7},
+    email: {type: String, required: true, unique: true},
     about: {type: String},
     properties:{
-        landing_page: {type: String, default: 'dashboard'},
         enabled: {type: Boolean, default: true},
+        forceChangePassword: {type: Boolean, default: false}
+    },
+    defaults:{
+        landingPage: {type: String, default: 'dashboard'},
+        warehouse: {type: mongoose.Types.ObjectId},
+        company: {type: mongoose.Types.ObjectId},
+    },
+    permissions:{
+        warehouses: {type: Array},
+        companies: {type: Array},
     },
     createdBy: {type: mongoose.Types.ObjectId, required: true},
     updatedBy: {type: mongoose.Types.ObjectId, required: true},

@@ -9,7 +9,13 @@ function authenticate(req,res,next){
         if(error){
             res.status(401).send('Error 401');
             return;
-        }
+        };
+        
+        if(!decoded.properties.enabled){
+            res.status(401).send('El usuario se encuentra deshabilitado');
+            return;
+        };
+
         next();
     });
 }
