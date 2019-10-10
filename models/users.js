@@ -1,7 +1,7 @@
 const { url } = require('../config').db;
 const mongoose = require('mongoose');
 
-mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true});
 
 const schema = new mongoose.Schema({
     name: {type: String, required: true},
@@ -13,8 +13,8 @@ const schema = new mongoose.Schema({
         landing_page: {type: String, default: 'dashboard'},
         enabled: {type: Boolean, default: true},
     },
-    //updatedBy: {type: Schema.Types.ObjectId},
-    //modifiedBy: {type: Schema.Types.ObjectId},
+    createdBy: {type: mongoose.Types.ObjectId, required: true},
+    updatedBy: {type: mongoose.Types.ObjectId, required: true},
 },{
 	timestamps:true,
 });

@@ -1,14 +1,14 @@
 // App settings
 app = {};
-app.port = null;
-app.host = null; //default 0.0.0.0
+app.port = 3000;
+app.host = 'localhost'; //default 0.0.0.0
 
 
 // Database settings
 db = {};
-db.host = null;
-db.port = null;
-db.database = null;
+db.host = 'localhost';
+db.port = 27017;
+db.database = 'tallena';
 db.username = null;
 db.password = null;
 db.url = `mongodb://${db.host}:${db.port}/${db.database}`;
@@ -17,12 +17,12 @@ db.url = `mongodb://${db.host}:${db.port}/${db.database}`;
 
 // JWT settings
 jwt = {};
-jwt.secret = null;
+jwt.secret = 'tallena';
 
 
 // Bcrypt settings
 bcrypt = {};
-bcrypt.saltRounds = null;
+bcrypt.saltRounds = 10;
 
 
 module.exports = {

@@ -13,9 +13,13 @@ function login(req,res)
                 res.status(204).send('No existe el usuario');
                 return;
             }
+            if(!data.properties.enabled){
+                res.status(401).send('El usuario se encuentra deshabilitado');
+                return;
+            }
 
-            var payload = data;
-            
+            var payload = data.toJSON();
+
             bcrypt
                 .compare(req.body.password, payload.password)
                 .then( same => {
@@ -24,7 +28,7 @@ function login(req,res)
                         return;
                     }
 
-                    jwt.sign({payload}, secret, {expiresIn: '60s'}, function(error, token){
+                    jwt.sign(payload, secret, {expiresIn: '180s'}, function(error, token){
                         if( error ){
                             res.status(400).send( error )
                             console.error(error);
@@ -37,7 +41,6 @@ function login(req,res)
                 .catch( error => console.error(error) )
         })
         .catch( error => console.error(error) )
-
 }
 
 module.exports = {
