@@ -15,7 +15,7 @@ const schema = new mongoose.Schema({
         forceChangePassword: {type: Boolean, default: false}
     },
     defaults:{
-        landingPage: {type: String, default: 'dashboard'},
+        landingPage: {type: String, required: true, default: 'dashboard'},
         warehouse: {type: mongoose.Types.ObjectId},
         company: {type: mongoose.Types.ObjectId},
     },

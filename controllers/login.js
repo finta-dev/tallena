@@ -20,7 +20,7 @@ function signIn(req,res)
                 .compare(req.body.password, payload.password)
                 .then( same => {
                     if( !same ){
-                        res.status(401).header('statusText', 'Las contraseñas es incorrecta').send();
+                        res.status(401).header('statusText', 'La contraseña es incorrecta').send();
                         return;
                     }
 
@@ -36,7 +36,11 @@ function signIn(req,res)
                             return;
                         }
 
-                        res.status(200).header('token', token).send();
+                        res
+                            .status(300)
+                            .cookie('accessToken', token, { httpOnly: true })
+                            .header('accessToken', token)
+                            .send();
                     })
                 })
                 .catch( error => console.error(error) )
@@ -45,7 +49,6 @@ function signIn(req,res)
 }
 
 function render(req, res){
-    console.log( req.cookie );
     res.status(200).render('login');
 }
 

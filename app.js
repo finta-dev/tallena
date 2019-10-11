@@ -1,13 +1,14 @@
 const express = require('express');
 const helmet = require('helmet');
-const cors = require('cors');
+const exphbs  = require('express-handlebars');
+const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 const { port, host } = require('./config').app;
-const exphbs  = require('express-handlebars');
-const package = require('./package.json').bugs;
+const errors = require('./models/errors');
 
 let app = express();
 app.use(helmet());
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
@@ -17,27 +18,12 @@ app.set('view engine', 'handlebars');
 routes(app);
 
 app.use(function(req, res, next) {
-    res.status(404).render('errors', {
-        layout: false,
-        statusCode: '404',
-        title: 'Oops! Page Not Be Found',
-        message: 'Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable',
-        linkHome: '/dashboard',
-        linkDescription: 'Back to homepage'
-    })
+    res.status(404).render('errors', errors.e404);
 });
 
 app.use(function(err, req, res, next) {
     console.error(err.stack);
-    res.status(500).render('errors', {
-        layout: false,
-        statusCode: '500',
-        title: 'Internal server error',
-        message: 'The server encountered and internal server error or misconfiguration and was unable to complete your request',
-        // linkHome: 'http://google.com.ar',
-        linkHome: package.url,
-        linkDescription: 'Report an Issue'
-    });
+    res.status(500).render('errors', errors.e500);
 });
 
 app.listen(port, host, function() {

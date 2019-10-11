@@ -1,26 +1,41 @@
-const { secret } = require('../config').jwt;
 const jwt = require('jsonwebtoken');
+const errors = require('../models/errors');
+const { secret } = require('../config').jwt;
 
 
 function authenticate(req,res,next){
-    const token = req.headers.token;
+    const token = req.cookies.accessToken || req.headers.accessToken;
 
-    jwt.verify(token, secret, function(error, decoded){
-        if(error || !decoded.properties.enabled){
-            res.status(401).render('errors', {
-                layout: false,
-                statusCode: '401',
-                title: 'Not Authorized',
-                message: 'You do not have permission to access this page',
-                linkHome: '/login',
-                linkDescription: 'Sign In'
-            });
+    if(!token)
+    {
+        if( req.route.path !== '/' )
+        {
+            res
+            .status(401)
+            .clearCookie('accessToken')
+            .render('errors', errors.e401);
 
             return;
         }
 
-        next();
-    });
+        res.status(300).redirect('/login');
+    }
+    else
+    {
+        jwt.verify(token, secret, function(error, decoded){
+            if( error || !decoded.properties.enabled ){
+                res
+                    .status(401)
+                    .clearCookie('accessToken')
+                    .render('errors', errors.e401)
+    
+                return;
+            }
+            
+            res.locals.landingPage = decoded.defaults.landingPage;
+            next();
+        });
+    }
 }
 
 
