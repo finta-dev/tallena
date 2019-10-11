@@ -37,7 +37,7 @@ function signIn(req,res)
                         }
 
                         res
-                            .status(300)
+                            .status(200)
                             .cookie('accessToken', token, { httpOnly: true })
                             .header('accessToken', token)
                             .send();
@@ -49,7 +49,7 @@ function signIn(req,res)
 }
 
 function render(req, res){
-    res.status(200).render('login');
+    res.status(200).render('login', { layout: false });
 }
 
 module.exports = {

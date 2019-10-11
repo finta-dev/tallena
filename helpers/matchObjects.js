@@ -1,5 +1,3 @@
-const isEmpty = require('./isEmpty');
-
 function matchObjects(requestObject, compareObject){
     if( typeof requestObject !== 'object' || typeof compareObject !== 'object' ){ return {} }
 
@@ -8,7 +6,7 @@ function matchObjects(requestObject, compareObject){
     for( let key in requestObject ){
         if( typeof requestObject[key] === 'object' )
         {
-            if( !isEmpty( matchObjects(requestObject[key], compareObject[key]) ) )
+            if( !matchObjects(requestObject[key], compareObject[key]) )
             {
                 newObject[key] = matchObjects(requestObject[key], compareObject[key]);
             }
