@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tallena | Iniciar sesión</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <h1>Iniciar sesion</h1>
+    <input id="username" type="text" placeholder="username">
+    <input id="password" type="password" placeholder="password">
+    <button id="signIn">Sign in</button>
+</body>
+</html>
+
+<script>
+    document.getElementById('signIn').addEventListener('click', function(){
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/login', {
+            method: 'POST',
+            headers:{ 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        })
+        .then( res => {
+            console.log(res.status, res.headers.get('statusText'));
+            if( res.status !== 200 ){ 
+                alert(res.headers.get('statusText')); 
+                return; 
+            }
+            
+            console.log( res.headers.get('token') );
+        })
+        .catch( error => console.error( error ) )
+        
+    })
+</script>

@@ -3,18 +3,14 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { secret } = require('../config').jwt;
 
-function login(req,res)
+function signIn(req,res)
 {
     users.model
         .findOne({ username: req.body.username })
         .then( data => {
 
             if(!data){
-                res.status(204).send('No existe el usuario');
-                return;
-            }
-            if(!data.properties.enabled){
-                res.status(401).send('El usuario se encuentra deshabilitado');
+                res.status(204).header('statusText', 'No existe el usuario').send();
                 return;
             }
 
@@ -24,11 +20,16 @@ function login(req,res)
                 .compare(req.body.password, payload.password)
                 .then( same => {
                     if( !same ){
-                        res.status(401).send('Las contraseñas es incorrecta');
+                        res.status(401).header('statusText', 'Las contraseñas es incorrecta').send();
                         return;
                     }
 
-                    jwt.sign(payload, secret, {expiresIn: '180s'}, function(error, token){
+                    if(!payload.properties.enabled){
+                        res.status(401).header('statusText', 'El usuario se encuentra deshabilitado').send();
+                        return;
+                    }
+
+                    jwt.sign(payload, secret, {expiresIn: '3600s'}, function(error, token){
                         if( error ){
                             res.status(400).send( error )
                             console.error(error);
@@ -43,6 +44,12 @@ function login(req,res)
         .catch( error => console.error(error) )
 }
 
+function render(req, res){
+    console.log( req.cookie );
+    res.status(200).render('login');
+}
+
 module.exports = {
-    login: login,
+    signIn: signIn,
+    render: render,
 }

@@ -6,15 +6,18 @@ function authenticate(req,res,next){
     const token = req.headers.token;
 
     jwt.verify(token, secret, function(error, decoded){
-        if(error){
-            res.status(401).send('Error 401');
+        if(error || !decoded.properties.enabled){
+            res.status(401).render('errors', {
+                layout: false,
+                statusCode: '401',
+                title: 'Not Authorized',
+                message: 'You do not have permission to access this page',
+                linkHome: '/login',
+                linkDescription: 'Sign In'
+            });
+
             return;
-        };
-        
-        if(!decoded.properties.enabled){
-            res.status(401).send('El usuario se encuentra deshabilitado');
-            return;
-        };
+        }
 
         next();
     });

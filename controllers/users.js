@@ -163,10 +163,15 @@ function createUser(req, res){
         })
 };
 
+function render(req, res){
+    res.status(200).render('users');
+}
+
 module.exports = {
     getUser: getUser,
     getUsers: getUsers,
     deleteUser: deleteUser,
     updateUser: updateUser,
     createUser: createUser,
+    render: render,
 }
