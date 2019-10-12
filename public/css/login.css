@@ -1,0 +1,20 @@
+
+body
+{    
+    background-color: #F3F3F3;
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    overflow: hidden;
+    width: 100vw;
+}
+
+section
+{
+    text-align: center;
+    padding: 2rem !important;
+    align-items: center;
+    min-width: 300px;
+    min-height: 350px;
+}

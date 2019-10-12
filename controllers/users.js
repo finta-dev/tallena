@@ -101,15 +101,13 @@ function updateUser(req, res){
         permissions:{
             warehouses: null,
             companies: null,
-        },
-        createdBy: payload._id,
-        updatedBy: payload._id,
+        }
     }
 
     const updateObject = matchObjects(req.body, schema);
 
     users.model
-        .findByIdAndUpdate( id, { $set: updateObject }, {new: true})
+        .findByIdAndUpdate( id, { $set: updateObject, createdBy: payload._id, updatedBy: payload._id, }, {new: true})
         .then( data => {
             if(!data){
                 res.status(404).send('No se encontró el usuario');
@@ -163,10 +161,15 @@ function createUser(req, res){
         })
 };
 
+function render(req, res){
+    res.status(200).render('users');
+}
+
 module.exports = {
     getUser: getUser,
     getUsers: getUsers,
     deleteUser: deleteUser,
     updateUser: updateUser,
     createUser: createUser,
+    render: render,
 }
