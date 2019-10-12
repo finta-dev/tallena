@@ -4,8 +4,8 @@ const errors = {
     
     e404:{
         layout: false,
-        image: 'e404',
         statusCode: '404',
+        image: 'e404.png',
         title: 'Oops! Page Not Be Found',
         message: 'Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable',
         linkHome: '/',
@@ -15,7 +15,7 @@ const errors = {
     e401:{
         layout: false,
         statusCode: '401',
-        image: 'e401',
+        image: 'e401.png',
         title: 'Not Authenticated',
         message: 'You have to log in to access this page',
         linkHome: '/login',
@@ -25,7 +25,7 @@ const errors = {
     e403:{
         layout: false,
         statusCode: '403',
-        image: 'e403',
+        image: 'e403.png',
         title: 'Not Authorized',
         message: 'You do not have permission to access this page',
         linkHome: '/login',
@@ -35,7 +35,7 @@ const errors = {
     e500:{
         layout: false,
         statusCode: '500',
-        image: 'e500',
+        image: 'e500.png',
         title: 'Internal server error',
         message: 'The server encountered and internal server error or misconfiguration and was unable to complete your request',
         linkHome: package.url,

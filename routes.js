@@ -12,7 +12,8 @@ module.exports = function(app){
     });
 
     app.get('/login', login.render);
-    app.post('/login', login.signIn);
+    app.get('/logout', login.logout);
+    app.post('/login', login.login);
 
     app.get('/dashboard', authenticate, dashboard.render);
 

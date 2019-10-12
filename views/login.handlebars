@@ -5,40 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Tallena | Iniciar sesión</title>
+
+    <!-- SEMANTIC UI -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" integrity="sha256-9mbkOfVho3ZPXfM7W8sV2SndrGDuh7wuyLjtsWeTI1Q=" crossorigin="anonymous" />
+
+
+    <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-    <h1>Iniciar sesion</h1>
-    <input id="username" type="text" placeholder="username">
-    <input id="password" type="password" placeholder="password">
-    <button id="signIn">Sign in</button>
+    <section id="section" class="ui segment">
+        <div class="ui form">
+            <h1 class="ui header">Tallena</h1>
+            <div class="field">
+                <label>Usuario</label>
+                <div class="ui left icon input">
+                    <input type="text" id="username" placeholder="Usuario">
+                    <i class="user icon"></i>
+                </div>
+            </div>
+            <div class="field">
+                <label>Contraseña</label>
+                <div class="ui left icon input">
+                    <input type="password" id="password" placeholder="Contraseña">
+                    <i class="lock icon"></i>
+                </div>
+            </div>
+            <div class="field">
+                <button id="login" onclick="login()" class="ui fluid button primary">Ingresar</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="/js/login.js"></script>
 </body>
 </html>
-
-<script>
-    document.getElementById('signIn').addEventListener('click', function(){
-        
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-
-        fetch('/login', {
-            method: 'POST',
-            headers:{ 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
-        })
-        .then( res => {
-            console.log(res.status, res.headers.get('statusText'));
-            if( res.status !== 200 ){ 
-                alert(res.headers.get('statusText')); 
-                return; 
-            }
-            
-            console.log( res.headers.get('accessToken') );
-        })
-        .catch( error => console.error( error ) )
-        
-    })
-</script>

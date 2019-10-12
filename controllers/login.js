@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { secret } = require('../config').jwt;
 
-function signIn(req,res)
+function login(req,res)
 {
     users.model
         .findOne({ username: req.body.username })
@@ -40,6 +40,7 @@ function signIn(req,res)
                             .status(200)
                             .cookie('accessToken', token, { httpOnly: true })
                             .header('accessToken', token)
+                            .header('_id', payload._id)
                             .send();
                     })
                 })
@@ -48,11 +49,17 @@ function signIn(req,res)
         .catch( error => console.error(error) )
 }
 
+function logout(req,res)
+{
+    res.clearCookie('accessToken').redirect('/');
+}
+
 function render(req, res){
     res.status(200).render('login', { layout: false });
 }
 
 module.exports = {
-    signIn: signIn,
+    login: login,
+    logout: logout,
     render: render,
 }
