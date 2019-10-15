@@ -1,6 +1,42 @@
 body
 {
+    background-color: #EBEEF0;
     height: 100vh;
     width: 100vw;
+    font-family: 'Roboto', sans-serif !important;
+    overflow: hidden;
 }
 
+header
+{
+    background-color: #FFFFFF !important;
+    margin: 0 !important;
+}
+
+aside
+{
+    background-color: #F9F9F9 !important;
+    margin: 0 !important;
+}
+
+main
+{
+    width: 98% !important;
+    overflow: scroll !important;
+    max-height: 98vh;
+}
+
+table
+{
+    font-size: 0.85rem !important;
+}
+
+.ui.checkbox
+{
+    min-width: 7px;
+}
+
+.ui.divider
+{
+    margin: 0.5rem !important;
+}

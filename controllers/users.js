@@ -17,7 +17,7 @@ function getUser(req, res){
     }
     
     users.model
-        .findById( id )
+        .findById( id, '-password -__v' )
         .then( data => {
             if(!data){
                 res.status(404).send();
@@ -41,6 +41,7 @@ function getUsers(req, res){
             }
 
             res.status(200).send(data);
+            return data;
         })
         .catch(error => {
             console.log(error);
@@ -162,7 +163,13 @@ function createUser(req, res){
 };
 
 function render(req, res){
-    res.status(200).render('users');
+
+    res.status(200).render('users', {
+        header_title: 'Usuarios',
+        userData: [
+
+        ]
+    });
 }
 
 module.exports = {

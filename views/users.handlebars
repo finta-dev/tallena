@@ -1,1 +1,80 @@
-<h1>Users</h1>
+<!-- MENU FILTROS -->
+<aside class="ui secondary mini menu">
+    <div class="right menu">
+        <div class="item">
+            <div class="ui mini buttons">
+                <button class="ui basic button"><i class="upload icon"></i> Importar</button>	
+                <button class="ui basic button"><i class="download icon"></i> Exportar</button>
+            </div>
+        </div>
+        <div class="item"><button class="ui button"><i class="retweet icon"></i> Refrescar</button></div>
+    </div>
+</aside>
+
+<div class="ui hidden divider"></div>
+
+<!-- CONTENIDO PRINCIPAL -->
+<main id="main" class="ui fluid container">
+    <table class="ui single line very compact small table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Nombre</th>
+                <th>Datos</th>
+                <th>Otros</th>
+                <th class="one wide">Ult. Modificacion</th>
+                <th class="one wide">Creado </th>
+                <th class="one wide"></th>
+                <th class="one wide"></th>
+                <th class="one wide"></th>
+                <th class="one wide"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each userData}}
+                <tr>
+                    <td>
+                        <div class="ui fitted checkbox">
+                            <input type="checkbox">
+                            <label></label>
+                        </div>
+                    </td>
+                    <td>
+                        <h5 class="ui header">
+                            <a href="#" class="content">{{name}} {{lastname}}
+                                <div class="sub header">{{username}}</div>
+                            </a>
+                        </h5>
+                    </td>
+
+                    <td>
+                        {{email}}
+                        <br>
+                        (011) 15-1234-5678
+                    </td>
+                    <td>
+                        {{about}}
+                    </td>
+                    <td>
+                        {{createdBy}}
+                        <br>
+                        {{createdAt}}
+                    </td>
+                    <td>
+                        {{updatedBy}}
+                        <br>
+                        {{updatedAt}}
+                    </td>
+                    <td><button class="ui mini button">Defaults</button></td>
+                    <td><button class="ui mini button">Permisos</button></td>
+                    <td><button class="ui mini button">Contraseña</button></td>
+                    <td>
+                        <button class="ui red mini button">Deshabilitar</button>
+                    </td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</main>
+
+<script src="/js/users.js"></script>

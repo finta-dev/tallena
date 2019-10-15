@@ -1,12 +1,31 @@
 const users = require('../models/users');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { isAlpha } = require('validator');
 const { secret } = require('../config').jwt;
 
 function login(req,res)
 {
+    if( !req.body.username || !req.body.password )
+    {
+        res.status(400).header('statusText', 'Debe ingresar el usuario o la contraseña').send();
+        return;
+    }
+
+    const username = req.body.username;
+    const password = req.body.password;
+
+    if( !isAlpha(username) )
+    {
+        res.status(400).header('statusText', 'El usuario contiene caracteres invalidos').send();
+        return;
+    }
+
+    username.trim().toLowerCase();
+    password.trim();
+    
     users.model
-        .findOne({ username: req.body.username })
+        .findOne({ username: username })
         .then( data => {
 
             if(!data){
@@ -17,7 +36,7 @@ function login(req,res)
             var payload = data.toJSON();
 
             bcrypt
-                .compare(req.body.password, payload.password)
+                .compare(password, payload.password)
                 .then( same => {
                     if( !same ){
                         res.status(401).header('statusText', 'La contraseña es incorrecta').send();
