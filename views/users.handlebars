@@ -7,7 +7,9 @@
                 <button class="ui basic button"><i class="download icon"></i> Exportar</button>
             </div>
         </div>
-        <div class="item"><button class="ui button"><i class="retweet icon"></i> Refrescar</button></div>
+        <div class="item">
+            <button class="ui button" onclick="location.reload();"><i class="retweet icon"></i> Refrescar</button>
+            </div>
     </div>
 </aside>
 
@@ -48,20 +50,20 @@
                     </td>
 
                     <td>
-                        {{email}}
+                        <a href="mailto:{{email}}">{{email}}</a> 
                         <br>
-                        (011) 15-1234-5678
+                        <a href="tel:{{phone}}">{{phone}}</a>
                     </td>
                     <td>
                         {{about}}
                     </td>
                     <td>
-                        {{createdBy}}
+                        {{createdByName}}
                         <br>
                         {{createdAt}}
                     </td>
                     <td>
-                        {{updatedBy}}
+                        {{updatedByName}}
                         <br>
                         {{updatedAt}}
                     </td>
@@ -69,7 +71,13 @@
                     <td><button class="ui mini button">Permisos</button></td>
                     <td><button class="ui mini button">Contraseña</button></td>
                     <td>
-                        <button class="ui red mini button">Deshabilitar</button>
+                        {{#with properties}}
+                            {{#if enabled}}
+                                <button class="ui red mini icon button"><i class="trash alternate icon"></i></button>
+                                {{else}}
+                                <button class="ui teal mini icon button"><i class="user plus icon"></i></button>
+                            {{/if}}
+                        {{/with}}
                     </td>
                 </tr>
             {{/each}}

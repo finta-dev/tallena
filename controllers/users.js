@@ -7,72 +7,44 @@ const jwt = require('jsonwebtoken');
 const matchObjects = require('../helpers/matchObjects');
 
 
-function getUser(req, res){
+async function getUser(req, res){
     const id = req.params.id;
 
-    if( !isObjectId( id ) )
-    {
-        res.status(400).send();
-        return;
-    }
+    const user = await users
+                        .getUser(id)
+                        .catch( error => {
+                            console.log(error);
+                            res.status(400).header('statusText', error).send();
+                        })
     
-    users.model
-        .findById( id, '-password -__v' )
-        .then( data => {
-            if(!data){
-                res.status(404).send();
-                return;
-            }
-            res.status(200).send(data);
-        })
-        .catch( error => {
-            res.status(400).send(error.message);
-        })
+    res.send(user);
 };
 
-function getUsers(req, res){
-    users.model
-        .find({}, '-password -__v')
-        .then(data => {
-            
-            if(data.length === 0 || data === undefined){
-                res.status(204).send();
-                return;
-            }
+async function getUsers(req, res){
 
-            res.status(200).send(data);
-            return data;
-        })
-        .catch(error => {
-            console.log(error);
-            res.status(400).send();
-        })
+    const usersList = await users
+                        .getUsers()
+                        .catch(error => {
+                            console.log(error);
+                            res.status(400).header('statusText', error).send();
+                        });
+
+    res.status(200).send(usersList);
 };
 
-function deleteUser(req, res){
+async function toggleUserAccess(req, res){
     const id = req.params.id;
-    const payload = jwt.decode(req.headers.token);
+    const token = req.cookies.accessToken || req.headers.accessToken;
+    const payload = jwt.decode(token);
 
-    if( !isObjectId( id ) )
-    {
-        res.status(400).send();
-        return;
-    }
+    const userAccess = await users
+                                .toggleUserAccess(id, payload._id, `${payload.name} ${payload.lastname}`)
+                                .catch( error => {
+                                    console.log(error);
+                                    res.status(400).header('statusText', error).send();
+                                });
 
-    users.model
-        .findByIdAndUpdate( id, { $set: { 'properties.enabled': false, 'updatedBy': payload._id} })
-        .then( data => {
-            if(!data){
-                res.status(404).send('No existe el usuario');
-                return;
-            }
-
-            res.status(200).send();
-        })
-        .catch( error => {
-            console.error(error);
-            res.status(400).send();
-        })
+    res.status(200).send(userAccess);
 }
 
 function updateUser(req, res){
@@ -125,8 +97,11 @@ function updateUser(req, res){
 
 function createUser(req, res){
 
+    const token = req.cookies.accessToken || req.headers.accessToken;
+    const payload = jwt.decode(token);
     const hashedPassword = bcrypt.hashSync(req.body.password, saltRounds);
-    const payload = jwt.decode(req.headers.token);
+
+    console.log(req.body.defaults.landingPage);
 
     const user = new users.model({
         name: req.body.name,
@@ -135,21 +110,22 @@ function createUser(req, res){
         password: hashedPassword,
         email: req.body.email,
         about: req.body.about,
+        phone: req.body.phone,
         properties:{
             enabled: req.body.enabled,
             forceChangePassword: req.body.forceChangePassword
         },
         defaults:{
             landingPage: req.body.landingPage,
-            warehouse: req.body.default.warehouse,
-            company: req.body.default.company,
         },
         permissions:{
             warehouses: req.body.permissions.warehouses,
             companies: req.body.permissions.companies,
         },
         createdBy: payload._id,
-        updatedBy: payload._id
+        createdByName: `${payload.name} ${payload.lastname}`,
+        updatedBy: payload._id,
+        updatedByName: `${payload.name} ${payload.lastname}`,
     });
 
     user
@@ -158,24 +134,24 @@ function createUser(req, res){
             res.status(200).send(data);
         })
         .catch( error => {
-            res.status(400).send(error.errmsg);
+            res.status(400).send(error);
         })
 };
 
-function render(req, res){
+async function render(req, res){
+
+    const userList = await users.getUsers();
 
     res.status(200).render('users', {
         header_title: 'Usuarios',
-        userData: [
-
-        ]
+        userData: userList,
     });
 }
 
 module.exports = {
     getUser: getUser,
     getUsers: getUsers,
-    deleteUser: deleteUser,
+    toggleUserAccess: toggleUserAccess,
     updateUser: updateUser,
     createUser: createUser,
     render: render,
