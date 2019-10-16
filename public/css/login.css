@@ -12,9 +12,20 @@ body
 
 section
 {
-    text-align: center;
     padding: 2rem !important;
     align-items: center;
     min-width: 300px;
     min-height: 350px;
+    max-width: 350px;
+}
+
+section h1
+{
+    text-align: center;
+}
+
+#capslock
+{
+    display: none;
+    text-align: center;
 }

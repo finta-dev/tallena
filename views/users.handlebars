@@ -1,5 +1,13 @@
 <!-- MENU FILTROS -->
 <aside class="ui secondary mini menu">
+    <!-- Buscador -->
+    <div class="item">
+        <div class="ui transparent icon small input">
+            <input id="search" type="text" placeholder="Buscar persona...">
+            <i class="search icon"></i>
+        </div>
+    </div>
+
     <div class="right menu">
         <div class="item">
             <div class="ui mini buttons">
@@ -23,9 +31,10 @@
                 <th></th>
                 <th>Nombre</th>
                 <th>Datos</th>
-                <th>Otros</th>
+                <th>Pertenece a</th>
+                <th>Comentarios</th>
                 <th class="one wide">Ult. Modificacion</th>
-                <th class="one wide">Creado </th>
+                <th class="one wide">Creado por</th>
                 <th class="one wide"></th>
                 <th class="one wide"></th>
                 <th class="one wide"></th>
@@ -43,7 +52,7 @@
                     </td>
                     <td>
                         <h5 class="ui header">
-                            <a href="#" class="content">{{name}} {{lastname}}
+                            <a href="#" class="content">{{name}}
                                 <div class="sub header">{{username}}</div>
                             </a>
                         </h5>
@@ -55,17 +64,22 @@
                         <a href="tel:{{phone}}">{{phone}}</a>
                     </td>
                     <td>
+                        Grupos: 
+                        <br>
+                        Perfil: {{#if profile}} {{profile}} {{else}} ninguno {{/if}} 
+                    </td>
+                    <td>
                         {{about}}
                     </td>
                     <td>
                         {{createdByName}}
                         <br>
-                        {{createdAt}}
+                        {{!-- {{createdAt}} --}}
                     </td>
                     <td>
                         {{updatedByName}}
                         <br>
-                        {{updatedAt}}
+                        {{!-- {{updatedAt}} --}}
                     </td>
                     <td><button class="ui mini button">Defaults</button></td>
                     <td><button class="ui mini button">Permisos</button></td>

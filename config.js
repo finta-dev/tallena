@@ -7,12 +7,27 @@ app.host = 'localhost'; //default 0.0.0.0
 // Database settings
 db = {};
 db.host = 'localhost';
-db.port = 27017;
+db.port = 27017;    //default 27017
 db.database = 'tallena';
 db.username = null;
 db.password = null;
-db.url = `mongodb://${db.host}:${db.port}/${db.database}`;
-//db.url = `mongodb://${db.username}:${db.password}@${db.host}:${db.port}/${database}`;
+db.uri = `mongodb://${db.host}:${db.port}/${db.database}`;
+db.connectionOptions = {
+    // https://mongoosejs.com/docs/api.html#mongoose_Mongoose-connect
+    useCreateIndex: true, 
+    useFindAndModify: false,
+    useNewUrlParser: true, 
+    useUnifiedTopology: true, 
+}
+db.defaultSchemaOptions = {
+    // https://mongoosejs.com/docs/api/schema.html#schema_Schema
+    _id: true,
+    bufferCommands: true,
+    id: true,
+    minimize: true,
+    skipVersioning: true,
+    timestamps: true,
+}
 
 
 // JWT settings

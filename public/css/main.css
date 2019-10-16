@@ -7,6 +7,13 @@ body
     overflow: hidden;
 }
 
+nav
+{
+    height: 100vh;
+    max-width: 400px;
+    min-width: 250px;
+}
+
 header
 {
     background-color: #FFFFFF !important;

@@ -1,3 +1,4 @@
+// Functions
 async function login()
 {
     toggleLoading();
@@ -64,6 +65,34 @@ function redirectToLandingPage(landingPage)
     window.location.replace(url);
 }
 
-function toggleLoading(){
+function toggleLoading()
+{
     document.getElementById('section').classList.toggle('loading');
 }
+
+function loginOnEnter()
+{
+    if( event.keyCode === 13 )
+    {
+        event.preventDefault();
+        login();
+    }
+}
+
+function displayCapsLockMessage()
+{
+    const msg = document.getElementById('capslock');
+
+    if (event.getModifierState("CapsLock")) {
+        msg.style.display = "block";
+    } else {
+        msg.style.display = "none"
+    }
+}
+
+
+// Events
+document.getElementById('login').addEventListener('click', login);
+document.getElementById('username').addEventListener('keyup', loginOnEnter);
+document.getElementById('password').addEventListener('keyup', loginOnEnter);
+document.getElementById('password').addEventListener('keyup', displayCapsLockMessage);

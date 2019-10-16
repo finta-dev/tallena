@@ -1,14 +1,18 @@
+//Dependecies
 const mongoose = require('mongoose');
-const { url } = require('../config').db;
+const bcrypt = require('bcrypt');
+// Configs
+const { defaultSchemaOptions } = require('../config').db;
+const { saltRounds } = require('../config').bcrypt;
+//Helpers
 const isObjectId = require('../helpers/isObjectId');
+const like = require('../helpers/like');
+const isEmpty = require('../helpers/isEmpty');
 
 
-mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
-
-
+// Schema & Model
 const schema = new mongoose.Schema({
     name: {type: String, required: true},
-    lastname: {type: String, required: true},
     username: {type: String, required: true, unique: true},
     password: {type: String, required: true, minlength: 7},
     email: {type: String, required: true, unique: true},
@@ -31,36 +35,44 @@ const schema = new mongoose.Schema({
     createdByName: {type: String, required: true},
     updatedBy: {type: mongoose.Types.ObjectId, required: true},
     updatedByName: {type: String, required: true}
-},{
-	timestamps:true,
-});
-
+}, defaultSchemaOptions);
 
 const model = mongoose.model('user', schema);
 
 
+// Variables
+const excludedFields = '-password -__v';
+
+
+// Functions
 async function getUser(id)
 {
-    if( !id )
-    {
-        throw 'The "id" parameter is necessary'
-    }
-
-    if( !isObjectId( id ) )
-    {
-        throw 'The "id" parameter must be an ObjectID'
-    }
+    if( !id ) { throw 'The "id" parameter is necessary' }
+    if( !isObjectId(id) ) { throw 'The "id" parameter must be an ObjectID' }
 
     return await model
-                .findById( id, '-password -__v' )
+                .findById( id, excludedFields )
                 .catch( error => { throw error });
-
 }
 
-async function getUsers()
+async function getUsers(filter)
 {
+    let searchQuery = {};
+
+    if( filter )
+    {
+        searchQuery = { 
+            $or: 
+            [
+                { name: like(filter) },
+                { username: like(filter) },
+                { email: like(filter) },
+            ]
+        }
+    }
+
     return await model
-                .find({}, '-password -__v')
+                .find(searchQuery, excludedFields)
                 .catch(error => {
                     console.log(error);
                     throw error
@@ -69,6 +81,11 @@ async function getUsers()
 
 async function toggleUserAccess(id, updatedBy, updatedByName)
 {
+    if( !id ) { throw 'The "id" parameter is necessary' }
+    if( !isObjectId(id) ) { throw 'The "id" parameter must be an ObjectID' }
+    if( !updatedBy ) { throw 'The "updatedBy" parameter is necessary' }
+    if( !updatedByName ) { throw 'The "updatedByName" parameter is necessary' }
+
     let userAccess = await getUser(id);
     userAccess = userAccess.properties.enabled;
 
@@ -80,9 +97,69 @@ async function toggleUserAccess(id, updatedBy, updatedByName)
                 });
 }
 
+async function updateUser(id ,updateObject, updatedBy, updatedByName)
+{
+    if( !id ) { throw 'The "id" parameter is necessary' }
+    if( !isObjectId(id) ) { throw 'The "id" parameter must be an ObjectID' }
+    if( !updatedBy ) { throw 'The "updatedBy" parameter is necessary' }
+    if( !updatedByName ) { throw 'The "updatedByName" parameter is necessary' }
+    if( isEmpty(updateObject) ) { throw 'The updateObject cant be empty' }
+
+    delete updateObject._id;
+    delete updateObject.id;
+    delete updateObject.__v;
+    delete updateObject.username;
+    delete updateObject.password;
+    delete updateObject.createdBy;
+    delete updateObject.createdByName;
+    delete updateObject.createdAt;
+    delete updateObject.updatedBy;
+    delete updateObject.updatedByName;
+    delete updateObject.createdAt;
+
+    return await model
+                    .findByIdAndUpdate( id, { $set: updateObject, updatedBy: updatedBy, updatedByName: updatedByName }, {new: true})
+                    .catch( error => {
+                        console.error(error);
+                        throw error;
+                    })
+}
+
+async function createUser(createObject, createdBy, createdByName)
+{
+    if( !createdBy ) { throw 'The "createdBy" parameter is necessary' }
+    if( !createdByName ) { throw 'The "createdByName" parameter is necessary' }
+    if( isEmpty(createObject) ) { throw 'The createObject cant be empty' }
+
+    delete createObject._id;
+    delete createObject.id;
+    delete createObject.createdAt;
+    delete createObject.updatedAt;
+    delete createObject.__v;
+
+    createObject.createdBy = createdBy
+    createObject.createdByName = createdByName;
+    createObject.updatedBy = createdBy;
+    createObject.updatedByName = createdByName;
+    createObject.password = bcrypt.hashSync(createObject.password, saltRounds);
+
+    const newUser = new model(createObject);
+    
+    return await newUser
+                    .save()
+                    .catch( error => {
+                        console.error(error);
+                        throw error;
+                    })
+}
+
+
+// Exports
 module.exports = {
     model: model,
     getUser: getUser,
     getUsers: getUsers,
     toggleUserAccess: toggleUserAccess,
+    updateUser: updateUser,
+    createUser: createUser,
 }
