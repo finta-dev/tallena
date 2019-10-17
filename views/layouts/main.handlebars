@@ -11,79 +11,129 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="/css/main.css">
+
+    <!-- JQUERY --> <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <!-- SEMANTIC UI JS --> <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha256-t8GepnyPmw9t+foMh3mKNvcorqNHamSKtKRxxpUEgFI=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <!-- MENU PRINCIPAL
-    <nav class="ui fixed vertical small menu">
-        <div class="header item">Tallena</div>
-        <a href="/dashboard" class="item">Dashboard</a>
-        
-        <div class="ui dropdown item"><i class="dropdown icon"></i>Configuracion
-            <div class="menu">
-                <a href="/users" class="item">Usuarios</a>
+    <!-- SIDEBAR -->
+    <nav id="navbar" class="ui sidebar accordion vertical menu">
+        <h4 class="header item">Tallena</h4>
+
+        <div class="item">
+            <h5 class="ui header">{{userData.name}}
+                <div class="sub header"> 
+                    {{#if userData.profile}} 
+                        {{userData.profile}}
+                    {{else}}
+                        Sin perfil
+                    {{/if}}
+                </div>
+            </h5>
+            <a href="/users/{{userData._id}}"> Ver mi perfil</a>
+        </div>
+
+        <div class="item">
+            <div class="ui icon small input">
+                <input type="text" placeholder="Buscar...">
+                <i class="search icon"></i>
             </div>
         </div>
 
-        <div class="ui dropdown item"><i class="dropdown icon"></i>Mas..
-            <div class="menu">
-                <a href="#" class="item">Ayuda</a>
+        <div class="item">
+            <div class="active title"><i class="dropdown icon"></i>Procesos</div>
+            <div class="active content">
+                <div class="ui vertical secondary menu">
+                    <a href="/dashboard" class="item"><i class="chart pie icon"></i> Dashboard</a>
+                    <a href="#" class="item"><i class="boxes icon"></i>Ingresos</a>
+                    <a href="#" class="item"><i class="dolly icon"></i>Egresos</a>
+                    <a href="#" class="item"><i class="reply icon"></i> Devoluciones</a>
+                    <a href="#" class="item"><i class="warehouse icon"></i>Deposito</a>
+                    <a href="#" class="item"><i class="clipboard check icon"></i>Auditoria</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="title"><i class="dropdown icon"></i>Consultas</div>
+            <div class="content">
+                <div class="ui vertical secondary menu">
+                    <a href="#" class="item"><i class="boxes icon"></i>Ingresos</a>
+                    <a href="#" class="item"><i class="dolly icon"></i> Egresos</a>
+                    <a href="#" class="item"><i class="pallet icon"></i>Contenedores</a>
+                    <a href="#" class="item"><i class="shipping fast icon"></i>Viajes</a>
+                    <a href="#" class="item"><i class="clipboard list icon"></i>Productividad</a>
+                    <a href="#" class="item"><i class="chart line icon"></i>Rentabilidad</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="title"><i class="dropdown icon"></i>Entidades</div>
+            <div class="content">
+                <div class="ui vertical secondary menu">
+                    <a href="#" class="item"><i class="warehouse icon"></i>Depositos</a>
+                    <a href="#" class="item"><i class="industry icon"></i>Clientes</a>
+                    <a href="#" class="item"><i class="box icon"></i>Productos</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="title"><i class="dropdown icon"></i>Configuración</div>
+            <div class="content">
+                <div class="ui vertical secondary menu">
+                    <a href="/users" class="item"><i class="users icon"></i>Usuarios</a>
+                    <a href="#" class="item"><i class="database icon"></i>Back up & Restore</a>
+                    <a href="#" class="item"><i class="cogs icon"></i> Avanzada</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="title"><i class="dropdown icon"></i>Mas</div>
+            <div class="content">
+                <div class="ui vertical secondary menu">
+                    <a href="/users" class="item"><i class="question icon"></i>Acerca de..</a>
+                    <a href="#" class="item"><i class="bug icon"></i>Reportar un bug</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    -->
-
-    <!-- MENU HERRAMIENTAS -->
-    <header class="ui secondary menu">
-
-        <!-- Titulo de la cabecera -->
-        <h5 class="header item">{{header_title}}</h5>
-
-        
-        <div class="right menu">
-            <!-- Boton "nuevo" -->
-            <div class="item">
-                <div class="ui mini buttons">
-                    <div class="ui button">Nuevo ticket</div>
-                    <div class="ui floating dropdown icon button">
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div class="item">Nuevo acceso</div>
-                            <div class="item">Nuevo articulo</div>
-                            <div class="item">Nuevo cliente</div>
-                            <div class="item">Nuevo contacto</div>
-                            <div class="item">Nuevo grupo</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Buscador -->
-            <div class="item">
-                <div class="ui transparent icon small input">
-                    <input type="text" placeholder="Buscar...">
-                    <i class="search icon"></i>
-                </div>
-            </div>
-
-            <!-- Favoritos -->
-            <a href="#" class="item tooltip" data-variation="inverted" data-content="Favoritos" data-position="left center">
-                <i class="red heart icon"></i>
+    <!-- CONTENT -->
+    <main class="ui pusher fluid container">
+        <!-- TOOLS MENU -->
+        <header class="ui secondary menu">
+            <a id="menu" class="icon item">
+                <i class="bars icon"></i>
             </a>
 
-            <!-- Log out -->
-            <a href="/logout" class="icon item">
-                <i class="sign-out icon"></i>
-            </a>
-        </div>
+            <!-- Header -->
+            <h5 class="header item">{{header_title}}</h5>
+            
+            <div class="right menu">
+                <!-- Mensajes -->
+                <a href="#" class="icon item tooltip" data-variation="inverted" data-content="Mensajes" data-position="left center">
+                    <i class="blue inbox icon"></i>
+                </a>
 
-    </header>
+                <!-- Favoritos -->
+                <a href="#" class="icon item tooltip" data-variation="inverted" data-content="Favoritos" data-position="left center">
+                    <i class="red heart icon"></i>
+                </a>
 
-    <!-- JQUERY --> <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
-    <!-- SEMANTIC UI JS --> <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha256-t8GepnyPmw9t+foMh3mKNvcorqNHamSKtKRxxpUEgFI=" crossorigin="anonymous"></script>
+                <!-- Log out -->
+                <a href="/logout" class="icon item">
+                    <i class="sign-out icon"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        {{{body}}}
+    </main>
+
     <!-- JS --> <script src="/js/main.js"></script>
-
-    {{{body}}}
-
 </body>
 </html>

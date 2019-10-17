@@ -18,6 +18,8 @@ async function login()
     if( userID ){
         const userData = await retriveUserData(userID);
 
+        localStorage.setItem('userData', JSON.stringify(userData));
+
         redirectToLandingPage(userData.defaults.landingPage);
         return;
     }

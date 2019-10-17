@@ -1,17 +1,6 @@
 body
 {
-    background-color: #EBEEF0;
-    height: 100vh;
-    width: 100vw;
     font-family: 'Roboto', sans-serif !important;
-    overflow: hidden;
-}
-
-nav
-{
-    height: 100vh;
-    max-width: 400px;
-    min-width: 250px;
 }
 
 header
@@ -28,8 +17,13 @@ aside
 
 main
 {
+    background-color: #EBEEF0 !important;
+    height: 100%;
+}
+
+section
+{
     width: 98% !important;
-    overflow: scroll !important;
     max-height: 98vh;
 }
 

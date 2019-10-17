@@ -1,30 +1,38 @@
-<!-- MENU FILTROS -->
+<!-- FILTER MENU -->
 <aside class="ui secondary mini menu">
-    <!-- Buscador -->
+    <!-- New -->
     <div class="item">
-        <div class="ui transparent icon small input">
-            <input id="search" type="text" placeholder="Buscar persona...">
+        <div id="newUser" class="ui primary button"><i class="user plus icon"></i>Nuevo</div>
+    </div>
+
+    <!-- Search -->
+    <div class="item">
+        <div class="ui transparent icon input">
+            <input id="search" type="text" placeholder="Nombre, usuario o email...">
             <i class="search icon"></i>
         </div>
     </div>
 
     <div class="right menu">
+        <!-- Import & Export -->
         <div class="item">
             <div class="ui mini buttons">
                 <button class="ui basic button"><i class="upload icon"></i> Importar</button>	
                 <button class="ui basic button"><i class="download icon"></i> Exportar</button>
             </div>
         </div>
+
+        <!-- Refresh -->
         <div class="item">
             <button class="ui button" onclick="location.reload();"><i class="retweet icon"></i> Refrescar</button>
-            </div>
+        </div>
     </div>
 </aside>
 
 <div class="ui hidden divider"></div>
 
-<!-- CONTENIDO PRINCIPAL -->
-<main id="main" class="ui fluid container">
+<!-- MAIN CONTENT -->
+<section id="main" class="ui fluid container">
     <table class="ui single line very compact small table">
         <thead>
             <tr>
@@ -38,11 +46,11 @@
                 <th class="one wide"></th>
                 <th class="one wide"></th>
                 <th class="one wide"></th>
-                <th class="one wide"></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            {{#each userData}}
+            {{#each userList}}
                 <tr>
                     <td>
                         <div class="ui fitted checkbox">
@@ -59,9 +67,9 @@
                     </td>
 
                     <td>
-                        <a href="mailto:{{email}}">{{email}}</a> 
+                        <a href="mailto:{{email}}"><i class="envelope outline icon"></i> {{email}}</a> 
                         <br>
-                        <a href="tel:{{phone}}">{{phone}}</a>
+                        <a href="tel:{{phone}}"><i class="phone icon"></i> {{phone}}</a>
                     </td>
                     <td>
                         Grupos: 
@@ -87,9 +95,9 @@
                     <td>
                         {{#with properties}}
                             {{#if enabled}}
-                                <button class="ui red mini icon button"><i class="trash alternate icon"></i></button>
+                                <button class="ui mini icon button"><i class="close icon"></i></button>
                                 {{else}}
-                                <button class="ui teal mini icon button"><i class="user plus icon"></i></button>
+                                <button class="ui mini icon button"><i class="check icon"></i></button>
                             {{/if}}
                         {{/with}}
                     </td>
@@ -97,6 +105,14 @@
             {{/each}}
         </tbody>
     </table>
-</main>
+</section>
+
+<!-- NEW USER MODAL -->
+<div class="ui small modal">
+    <div class="header">Nuevo Usuario</div>
+    <div class="content">
+        
+    </div>
+</div>
 
 <script src="/js/users.js"></script>

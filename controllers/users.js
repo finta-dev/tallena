@@ -79,6 +79,9 @@ async function createUser(req, res)
 async function render(req, res)
 {
     const filter = req.query.filter;
+    const token = req.cookies.accessToken || req.headers.accessToken;
+    const payload = jwt.decode(token);
+
     let userList = await users
                             .getUsers(filter)
                             .catch(error => {
@@ -88,7 +91,8 @@ async function render(req, res)
 
     res.status(200).render('users', {
         header_title: 'Usuarios',
-        userData: userList,
+        userList: userList,
+        userData: payload,
     });
 }
 

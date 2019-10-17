@@ -16,3 +16,6 @@ function searchOnEnter()
 
 //Events
 document.getElementById('search').addEventListener('keyup', searchOnEnter);
+document.getElementById('newUser').addEventListener('click', function(){
+    $('.ui.modal').modal('show');
+})
