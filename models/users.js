@@ -1,5 +1,5 @@
 //Dependecies
-const mongoose = require('mongoose');
+const {schema, model} = require('mongoose');
 const bcrypt = require('bcrypt');
 // Configs
 const { defaultSchemaOptions } = require('../config').db;
@@ -14,7 +14,7 @@ const isEmpty = require('../helpers/isEmpty');
 const schema = new mongoose.Schema({
     name: {type: String, required: true},
     username: {type: String, required: true, unique: true},
-    password: {type: String, required: true, minlength: 7},
+    password: {type: String, required: true, minlength: 7, select: false},
     email: {type: String, required: true, unique: true},
     phone: {type: String},
     about: {type: String},
